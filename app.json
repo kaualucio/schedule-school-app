@@ -1,10 +1,19 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "schedule",
+    "slug": "schedule",
+    "owner": "kaualucio992",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "com.kaualucio992.schedule",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.kaualucio992.schedule",
+      "versionCode": 1
+    }
   }
 }
