@@ -13,7 +13,7 @@ type HeaderProps = {
 export function Header({ title, icon: Icon, button, add, handleFunction }: HeaderProps) {
   const { colors } = useTheme()
   return (
-    <HStack shadow={1} mb={4} px={4} py={3} safeAreaTop alignItems="center" bg="black.700" borderBottomColor="gray.400" borderBottomWidth={2}>
+    <HStack shadow={1} mb={4} px={4} h={24} safeAreaTop alignItems="center" bg="black.700" borderBottomColor="gray.400" borderBottomWidth={2}>
       <HStack alignItems="center" justifyContent="space-between" w="full">
         <HStack alignItems="center" ml={2}>
           <Icon size={35} color={String(colors.secondary)} />

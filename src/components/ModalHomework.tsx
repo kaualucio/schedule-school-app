@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, HStack, Spinner, Text } from 'native-base';
-import { Pencil, Trash } from 'phosphor-react-native';
+import { CalendarX, Trash } from 'phosphor-react-native';
 import { forwardRef, useState } from 'react';
 import { Alert, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -20,7 +20,6 @@ type ModalProps = {
 export const ModalHomework = forwardRef(({ currentHomeworkInfo, handleShowHomeworkInfo }: ModalProps, ref: any) => {
   const [isLoading, setIsLoading] = useState(false)
   const { handleRefetchData } = useRefetch()
-  const navigation = useNavigation()
   async function handleDelete(id: any) {
     setIsLoading(true)
     try {
@@ -38,12 +37,22 @@ export const ModalHomework = forwardRef(({ currentHomeworkInfo, handleShowHomewo
 
   }
 
-  function handleGoEditScreen() {
-    ref.current?.close();
-    navigation.navigate('editHomework', {
-      homework: currentHomeworkInfo
-    })
+  async function handleCloseSchedule() {
+    setIsLoading(true)
+    try {
+      const response = await HomeworkModel.markAsClosed(currentHomeworkInfo.id)
+      if(response) {
+        ref.current?.close();
+      } 
+      setIsLoading(false)
+      handleRefetchData()
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+      Alert.alert('Ooops :|', 'Ocorreu um erro ao encerrar a anotação da agenda, tente novamente')
+    }
   }
+
   return (
           <GestureHandlerRootView >
             <Portal>
@@ -84,11 +93,19 @@ export const ModalHomework = forwardRef(({ currentHomeworkInfo, handleShowHomewo
                         opacity={isLoading ? 0.7 : 1}
                         w={40} 
                         h={12}
-                        onPress={handleGoEditScreen}
+                        onPress={handleCloseSchedule}
                         >
                         <HStack alignItems="center">
-                          <Pencil size={22} color="#fff" />
-                          <Text fontSize="md" fontWeight="bold" color="white">Editar</Text>    
+                          {
+                            isLoading 
+                            ? <Spinner color="white" size="sm" accessibilityLabel={`Encerrando a disciplina ${currentHomeworkInfo?.title}`} /> 
+                            : (
+                                <>
+                                  <CalendarX size={22} color="#fff" />
+                                  <Text fontSize="md" fontWeight="bold" color="white">Encerrar</Text> 
+                                </>   
+                              )
+                          }
                         </HStack>
                       </Button>
                     </HStack>

@@ -45,12 +45,11 @@ const create = (obj: Omit<ISubject, 'id' | 'color'>) => {
          professor, 
          average, 
          classesInAWeek, 
-         description, 
-         color,
+         description,
          created_at,
          updated_at
-         ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-       [id, obj.name, obj.tagName, obj.professor, obj.average, obj.classesInAWeek, obj.description, '', Date.now(), Date.now()],
+         ) values (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+       [id, obj.name, obj.tagName, obj.professor, obj.average, obj.classesInAWeek, obj.description, Date.now(), Date.now()],
        //-----------------------
        (_:any, { rowsAffected, insertId}) => {
          if (rowsAffected > 0) {
@@ -137,6 +136,7 @@ const findByTagName = (tagName: string) => {
           if (rows.length > 0) resolve(rows._array);
           else reject("Obj not found: brand=" + tagName); // nenhum registro encontrado
         },
+         
       );
     });
   });
@@ -159,6 +159,9 @@ const all = () => {
         [],
         //-----------------------
         (_, { rows }) => resolve(rows._array),
+        (_:any, error: any) => {
+          console.log(error)
+        },
       );
     });
   });

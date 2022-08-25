@@ -6,7 +6,7 @@ export interface IHomework {
   title: string,
   subject_tagName: string,
   category: string,
-  deadline_date: Date,
+  deadline_date: any,
   description: string,
   completed: boolean | number
 }
@@ -115,6 +115,44 @@ const find = (id: string) => {
   });
 };
 
+const getDates = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      //comando SQL modificável
+      tx.executeSql(
+        "SELECT id, title, subject_tagName, category, deadline_date, description, completed  FROM homeworks",
+        [],
+        //-----------------------
+        (_, { rows }) => {
+          if (rows.length > 0) resolve(rows._array);
+        },
+        (_:any, error: any) => {
+          reject()
+        },
+      );
+    });
+  });
+};
+
+const findByDate = (date: number | string) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      //comando SQL modificável
+      tx.executeSql(
+        "SELECT * FROM homeworks WHERE deadline_date = ?",
+        [moment(date).unix()],
+        //-----------------------
+        (_, { rows }) => {
+          resolve(rows._array);
+        },
+        (_:any, error: any) => {
+          reject()
+        },
+      );
+    });
+  });
+};
+
 /**
  * BUSCA UM REGISTRO POR MEIO DA MARCA (brand)
  * - Recebe a marca do carro;
@@ -153,10 +191,30 @@ const all = () => {
     db.transaction((tx) => {
       //comando SQL modificável
       tx.executeSql(
-        "SELECT * FROM homeworks ORDER BY created_at DESC;",
+        "SELECT * FROM homeworks ORDER BY completed ASC, created_at DESC;",
         [],
         //-----------------------
         (_, { rows }) => resolve(rows._array),
+      );
+    });
+  });
+};
+
+const markAsClosed = (id: string) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      //comando SQL modificável
+      tx.executeSql(
+        `UPDATE homeworks SET completed = ? WHERE id=? ;`,
+        [1, id],
+        //-----------------------
+        (_, { rowsAffected }) => {
+          resolve(true)
+        },
+        (_:any, error: any) => {
+          console.log(error)
+          reject()
+        },
       );
     });
   });
@@ -193,5 +251,8 @@ export default {
   update,
   find,
   all,
+  markAsClosed,
+  getDates,
+  findByDate,
   remove,
 };

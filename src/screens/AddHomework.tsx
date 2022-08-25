@@ -9,6 +9,7 @@ import HomeworkModel from '../services/sqlite/HomeworkModel';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Header } from '../components/Header';
 import { useRefetch } from '../context/RefetchContext';
+import moment from 'moment';
 
 
 export function AddHomework() {
@@ -52,7 +53,8 @@ export function AddHomework() {
         return Alert.alert('Campos inválidos', 'Os campos com o asterísco (*) são obrigatórios, por favor preencha-os para continuar.')
       }
       try {
-        const response = await HomeworkModel.create({ title, category: type, subject_tagName: subject, description, deadline_date: date })
+        console.log( moment(date).toDate() )
+        const response = await HomeworkModel.create({ title, category: type, subject_tagName: subject, description, deadline_date: moment(date).format('YYYY-MM-DD') })
         Alert.alert('Sucesso', response)
         setSubject('')
         setTitle('')
@@ -113,9 +115,9 @@ export function AddHomework() {
                       _dragIndicator: {    
                         bgColor: "white"
                       },
-                      backgroundColor: 'green.500',
+                      backgroundColor: 'primary',
                     }}
-                    _item={{ backgroundColor: 'green.500' }}
+                    _item={{ backgroundColor: 'primary' }}
                     selectedValue={type}
                     onValueChange={(e) => setType(e)}
                     placeholder="Selecione a categoria"
@@ -141,11 +143,11 @@ export function AddHomework() {
                     fontSize="md"
                     _actionSheetContent={{
                       _dragIndicator: {    
-                        bgColor: "#000"
+                        bgColor: "white"
                       },
-                      backgroundColor: 'green.500',
+                      backgroundColor: 'primary',
                     }}
-                    _item={{ backgroundColor: 'green.500' }}
+                    _item={{ backgroundColor: 'primary' }}
                     selectedValue={subject}
                     onValueChange={(e) => setSubject(e)}
                     placeholder="Selecione a matéria"

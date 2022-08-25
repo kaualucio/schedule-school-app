@@ -4,7 +4,7 @@ import { Home } from '../screens/Home';
 import { Schedule } from '../screens/Schedule';
 import { Calendar } from '../screens/Calendar';
 import { Settings } from '../screens/Settings';
-import { House, Calendar as CalendarIcon, GearSix, PlusCircle, NotePencil, Books } from 'phosphor-react-native';
+import {  Calendar as CalendarIcon, GearSix, PlusCircle, NotePencil, Books } from 'phosphor-react-native';
 import { useTheme } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { AddSubject } from '../screens/AddSubject';
@@ -61,7 +61,7 @@ export function AppRoutes() {
          }}
       />
 
-      {/* <Screen 
+      <Screen 
         name="calendário"
         component={Calendar}
         options={{
@@ -69,9 +69,9 @@ export function AppRoutes() {
             <CalendarIcon  size={30} color={focused ? String(colors.primary) : colors.white} />
           )
          }}
-      /> */}
+      />
 
-      <Screen 
+      {/* <Screen 
         name="settings"
         component={Settings}
         options={{
@@ -79,7 +79,7 @@ export function AppRoutes() {
             <GearSix  size={30} color={focused ? String(colors.primary) : colors.white} />
           )
          }}
-      />
+      /> */}
 
        <Screen options={{
          tabBarItemStyle: {
